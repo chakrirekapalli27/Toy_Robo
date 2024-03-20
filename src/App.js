@@ -1,16 +1,8 @@
-
-
-
 import React, { useState } from "react";
 
-const ToyRobotSimulator = () => {
+const ToyRobot = () => {
   const [position, setPosition] = useState({ x_axis: 0, y_axis: 0 });
   const [warning, setWarning] = useState(false);
-
-  const moveRobot = () => {
-    let nextPosition = { ...position };
-    updatePosition(nextPosition);
-  };
 
   const moveUp = () => {
     const nextPosition = { ...position, y_axis: position.y_axis + 1 };
@@ -52,11 +44,11 @@ const ToyRobotSimulator = () => {
   }
 
   return (
-    <div className="bg-gradient-to-b from-blue-200 to-blue-500  lg:h-[90vh] rounded-md  p-2">
+    <div className="bg-gradient-to-b from-blue-200 to-blue-500 h-screen rounded-md flex justify-center items-center flex-col  p-2">
       <h1 className="text-center text-2xl font-bold mb-4 text-white py-3 underline">
         Toy Robot Simulator
       </h1>
-      <div className="container mx-auto flex flex-col md:flex-row sm:w-[80%] justify-center items-center border-2 rounded-md p-5 shadow-md ">
+      <div className="container mx-auto flex flex-col md:flex-row sm:w-[80%] justify-center items-center border-2 rounded-md p-7 shadow-md ">
         <div
           className={`grid grid-cols-5 gap-1 w-full md:w-[400px] rounded-lg h-full md:h-[400px] border-[6px] mx-auto  p-2 border-black ${
             warning && " border-red-500 "
@@ -107,13 +99,6 @@ const ToyRobotSimulator = () => {
             >
               Left
             </button>
-
-            <button
-              className="bg-blue-500 text-white py-2 px-4 rounded-md"
-              onClick={moveRobot}
-            >
-              Move
-            </button>
           </div>
 
           <div className="mt-4 flex justify-center text-[24px]">
@@ -121,8 +106,12 @@ const ToyRobotSimulator = () => {
               Report: {`(${position.x_axis + 1}, ${position.y_axis + 1})`}
             </p>
           </div>
-          <p className="text-red-800 text-[24px] ">
-            {warning ? "Hey you are going Out of Bound!" : " Moving"}
+          <p className=" text-[24px] ">
+            {warning ? (
+              <p className="text-red-700">"Hey you are going Out of Bound!" </p>
+            ) : (
+              " Moving"
+            )}
           </p>
         </div>
       </div>
@@ -130,5 +119,4 @@ const ToyRobotSimulator = () => {
   );
 };
 
-export default ToyRobotSimulator;
-
+export default ToyRobot;
