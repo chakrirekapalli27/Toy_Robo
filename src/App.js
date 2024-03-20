@@ -1,25 +1,134 @@
-import logo from './logo.svg';
-import './App.css';
 
-function App() {
+
+
+import React, { useState } from "react";
+
+const ToyRobotSimulator = () => {
+  const [position, setPosition] = useState({ x_axis: 0, y_axis: 0 });
+  const [warning, setWarning] = useState(false);
+
+  const moveRobot = () => {
+    let nextPosition = { ...position };
+    updatePosition(nextPosition);
+  };
+
+  const moveUp = () => {
+    const nextPosition = { ...position, y_axis: position.y_axis + 1 };
+    updatePosition(nextPosition);
+  };
+
+  const moveDown = () => {
+    const nextPosition = { ...position, y_axis: position.y_axis - 1 };
+    updatePosition(nextPosition);
+  };
+
+  const moveRight = () => {
+    const nextPosition = { ...position, x_axis: position.x_axis + 1 };
+    updatePosition(nextPosition);
+  };
+
+  const moveLeft = () => {
+    const nextPosition = { ...position, x_axis: position.x_axis - 1 };
+    updatePosition(nextPosition);
+  };
+
+  function updatePosition(nextPosition) {
+    const isWithinBorder = (position) => {
+      return (
+        position.x_axis >= 0 &&
+        position.x_axis < 5 &&
+        position.y_axis >= 0 &&
+        position.y_axis < 5
+      );
+    };
+
+    if (isWithinBorder(nextPosition)) {
+      setPosition(nextPosition);
+      setWarning(false);
+    } else {
+      setWarning(true);
+    }
+    return nextPosition;
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
+    <div className="bg-gradient-to-b from-blue-200 to-blue-500  lg:h-[90vh] rounded-md  p-2">
+      <h1 className="text-center text-2xl font-bold mb-4 text-white py-3 underline">
+        Toy Robot Simulator
+      </h1>
+      <div className="container mx-auto flex flex-col md:flex-row sm:w-[80%] justify-center items-center border-2 rounded-md p-5 shadow-md ">
+        <div
+          className={`grid grid-cols-5 gap-1 w-full md:w-[400px] rounded-lg h-full md:h-[400px] border-[6px] mx-auto  p-2 border-black ${
+            warning && " border-red-500 "
+          }`}
         >
-          Learn React
-        </a>
-      </header>
+          {Array.from({ length: 5 })
+            .map((index, rowIndex) =>
+              Array.from({ length: 5 }).map((index1, colIndex) => (
+                <input
+                  key={`${rowIndex}-${colIndex}`}
+                  type="text"
+                  readOnly
+                  className={`flex justify-center items-center outline-none  h-full p-1 rounded-md ${
+                    position.x_axis === colIndex && position.y_axis === rowIndex
+                      ? "bg-blue-500 text-transparent rounded-xl  '🤖' "
+                      : ""
+                  }   `}
+                />
+              ))
+            )
+            .reverse()}
+        </div>
+
+        <div className="mt-4 flex justify-center items-center flex-col gap-5 lg:mr-5">
+          <div className=" lg:pr-7">
+            <button
+              className="bg-blue-500 text-white py-2 px-4 mr-2  rounded-md my-2 "
+              onClick={moveUp}
+            >
+              Up
+            </button>
+            <button
+              className="bg-blue-500 text-white py-2 px-4 mr-2 rounded-md"
+              onClick={moveDown}
+            >
+              Down
+            </button>
+            <button
+              className="bg-blue-500 text-white py-2 px-4 mr-2 rounded-md my-1"
+              onClick={moveRight}
+            >
+              Right
+            </button>
+
+            <button
+              className="bg-blue-500 text-white py-2 px-4 mr-2 rounded-md"
+              onClick={moveLeft}
+            >
+              Left
+            </button>
+
+            <button
+              className="bg-blue-500 text-white py-2 px-4 rounded-md"
+              onClick={moveRobot}
+            >
+              Move
+            </button>
+          </div>
+
+          <div className="mt-4 flex justify-center text-[24px]">
+            <p className="text-white">
+              Report: {`(${position.x_axis + 1}, ${position.y_axis + 1})`}
+            </p>
+          </div>
+          <p className="text-red-800 text-[24px] ">
+            {warning ? "Hey you are going Out of Bound!" : " Moving"}
+          </p>
+        </div>
+      </div>
     </div>
   );
-}
+};
 
-export default App;
+export default ToyRobotSimulator;
+
